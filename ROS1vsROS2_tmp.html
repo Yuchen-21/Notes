@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ROS1vsROS2.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="ros1-vs-ros2">ROS1 vs ROS2</h1>
+<p>[toc]</p>
+<h2 id="%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB">本质区别</h2>
+<blockquote></blockquote>
+<ul>
+<li>ROS 1 的核心计算图里有 Master、Parameter Server、Topics、Services 等；roscore 本身就包含了 Master + rosout + parameter server。Master 负责命名和注册，Parameter Server 运行在 ROS Master 里，并通过 XMLRPC 暴露接口。</li>
+<li>ROS 2 则把底层通信重构到了 DDS/RTPS 中间件 之上，采用分布式发现，不再依赖 ROS 1 那样的集中式 Master。</li>
+</ul>
+<h2 id="%E5%8F%91%E7%8E%B0%E6%9C%BA%E5%88%B6">发现机制</h2>
+<ul>
+<li>ROS 1 需要 roscore。Master 提供 naming / registration 服务，节点先去找 Master，再建立连接。这个模型好理解、好排查，但 Master 天生是架构中的中心点。</li>
+<li>ROS 2 默认不使用集中式发现，而是靠 DDS 做分布式发现。好处是更适合多机、复杂网络、去中心化部署；代价是发现过程更复杂，有时启动后不会像 ROS 1 那样“立刻全都可见”</li>
+</ul>
+<p>工程含义：</p>
+<ol>
+<li>小型单机实验：ROS 1 更直观</li>
+<li>多机系统、分布式部署：ROS 2 结构更合理</li>
+<li>但 ROS 2 的发现、网络隔离、RMW 选择、QoS 不匹配，都会让排障复杂度上升</li>
+</ol>
+<h2 id="%E5%8F%82%E6%95%B0%E7%B3%BB%E7%BB%9F">参数系统</h2>
+<ul>
+<li>ROS 1 的 Parameter Server 运行在 Master 内。它更像一个全局共享配置仓。</li>
+<li>ROS 2 的参数是和节点绑定的，参数生命周期通常跟节点一致；节点一般要先声明自己接受哪些参数，这样类型和名称在启动时就更明确，能减少误配置。
+工程含义：</li>
+</ul>
+<ol>
+<li>ROS 1：全局改参数很方便，但也更容易“谁都能动”，大型系统里容易失控</li>
+<li>ROS 2：参数边界更清晰，更适合组件化、产品化和可维护性要求高的项目</li>
+</ol>
+<h2 id="%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B">通信模型</h2>
+<p>ROS1 是经典的Topic、Service模型，ROS 2 官方把三类接口的用途讲得很明确：</p>
+<ul>
+<li>Topic：连续数据流，如传感器、状态流</li>
+<li>Service：快速 RPC，请求-响应，适合短操作</li>
+<li>Action：长时间任务，带反馈，可取消/抢占</li>
+</ul>
+<h2 id="qos">QoS</h2>
+<p>ROS 2 提供丰富的 QoS 策略，合适配置下，它可以像 TCP 一样可靠，也可以像 UDP 一样 best-effort；
+并且不像 ROS 1 那样主要只有 TCP 路线。QoS 可单独配在 publisher、subscription、service server/client 上。
+ROS 2 可以针对不同流量类型做精细化配置，比如：</p>
+<ul>
+<li>激光雷达 / 图像：可能更偏 sensor-data / best effort</li>
+<li>控制命令：可能更偏 reliable</li>
+<li>低带宽无线网络：QoS 需要针对网络状况调参。
+<strong>ROS 1 的优点是“简单、默认能跑”；ROS 2 的优点是“可控、可调、适应复杂环境”。
+但也正因为可调，ROS 2 的坑会更多：QoS 一旦两端不兼容，消息可能根本送不到。</strong></li>
+</ul>
+<h2 id="%E6%89%A7%E8%A1%8C%E6%A8%A1%E5%9E%8B">执行模型</h2>
+<ul>
+<li>ROS 1 的 spin 更直接，ROS 2 的 Executor 更强</li>
+<li>ROS 2 官方明确说，执行管理由 Executors 负责，Executor 用一个或多个线程去调度 subscription、timer、service、action 等回调；相对 ROS 1 的 spin 机制，ROS 2 给了你更强的执行管理控制力。甚至还提供 WaitSet 用于更可控、偏确定性的调度。
+工程含义：</li>
+</ul>
+<ol>
+<li>ROS 1：上手快，思维负担小</li>
+<li>ROS 2：可以做更细的线程、回调组、调度控制，更适合复杂系统、中间件层、需要考虑实时性和执行顺序的模块。
+<strong>这也是为什么很多系统软件/架构岗位会更重视 ROS 2 的 executor、callback group、waitset，而不只是“会发 topic”。</strong></li>
+</ol>
+<h2 id="%E5%8D%95%E8%BF%9B%E7%A8%8B%E4%BC%98%E5%8C%96">单进程优化</h2>
+<p>ROS 1 nodelet vs ROS 2 component/composition</p>
+<ul>
+<li>ROS 1 为了减少进程间拷贝，引入了 nodelet，其目标就是让多个算法在同一进程内运行，并支持 zero-copy transport。</li>
+<li>ROS 2 把这个思路做成了更统一的 Component / Composition。官方文档明确写了：
+<ul>
+<li>ROS 1：nodes 和 nodelets 是两套风格</li>
+<li>ROS 2：推荐用 component，统一 API，避免 ROS 1 那种“两套写法”的割裂
+部署时可以自由选择“多进程隔离”或“单进程低开销”
+工程含义：</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>ROS 1 的 nodelet 很有用，但工程体验并不总是优雅</li>
+<li>ROS 2 的 composition/component 更适合做大系统的部署优化
+对 <strong>高带宽数据（图像、点云）</strong> 来说，这个差别很关键。</li>
+</ol>
+<h2 id="%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86">生命周期管理</h2>
+<p>ROS 1 基本没有统一方案，ROS 2 有 LifecycleNode</p>
+<ul>
+<li>ROS 2 引入了 managed nodes / LifecycleNode，有一套明确的状态机：如 unconfigured、inactive、active、finalized 以及各种 transition states。
+这件事在 demo 时可能感受不深，但在真正产品化系统里价值很大：</li>
+</ul>
+<ol>
+<li>设备驱动什么时候初始化</li>
+<li>感知模块什么时候进入 active</li>
+<li>故障恢复时是 deactivate 还是 cleanup</li>
+<li>上层编排如何感知模块状态
+这些在 ROS 1 里通常要自己做约定，ROS 2 至少给了统一语义。</li>
+</ol>
+<h2 id="%E5%AE%89%E5%85%A8">安全</h2>
+<p>ROS 1 基本弱，ROS 2 原生接入 DDS-Security</p>
+<ul>
+<li>ROS 2 官方明确说明：安全能力来自底层 DDS Security plugins，可提供加密、认证、访问控制；并且通过 enclave 概念，可以把策略映射到进程、设备或一组节点。</li>
+<li>ROS 1 则没有把安全作为核心架构的一部分来设计。
+当系统涉及：</li>
+</ul>
+<ol>
+<li>多机联网</li>
+<li>无线链路</li>
+<li>产品部署</li>
+<li>权限隔离</li>
+<li>真实环境接入
+ROS 2 的架构会更合理。</li>
+</ol>
+<h2 id="%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%B7%A5%E7%A8%8B%E7%BB%84%E7%BB%87">构建系统与工程组织</h2>
+<p>catkin vs ament + colcon</p>
+<ul>
+<li>ROS 1 的官方构建系统是 catkin。</li>
+<li>ROS 2 的包创建和构建则使用 ament 作为 build system、colcon 作为 build tool。官方还明确说 colcon 是对 catkin_make / catkin_tools / ament_tools 的进一步演进。</li>
+</ul>
+<h2 id="%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90">性能分析</h2>
+<p>别简单理解成“ROS 2 一定更快”
+ROS 2 的性能上限通常更高、可调空间更大，但默认复杂度也更高；
+在某些简单场景下，ROS 1 反而会给人“更轻、更顺手”的体感。</p>
+<h3 id="ros-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B8%B8%E8%AE%A9%E4%BA%BA%E8%A7%89%E5%BE%97%E6%8C%BA%E5%BF%AB%E6%8C%BA%E9%A1%BA">ROS 1 为什么常让人觉得“挺快、挺顺”</h3>
+<p>因为它默认模型简单：
+roscore + topic/service
+大量场景默认就走经典通信路径
+单机实验、实验室局域网、小系统里，调参少，心智负担低
+所以在“先把东西跑起来”这件事上，ROS 1 往往显得效率很高。这个“高”更多是开发和调试效率，不一定等于系统性能绝对更强。</p>
+<h3 id="ros-2-%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8A%BF%E6%9D%A5%E8%87%AA%E5%93%AA%E9%87%8C">ROS 2 的性能优势来自哪里</h3>
+<p>ROS 2 的潜在优势主要来自这些能力：
+QoS 可调：可靠/尽力而为、history、depth 等可针对链路和数据类型优化。
+单进程组合 + intra-process：减少进程间通信开销。
+loaned messages / zero-copy：减少内存分配和拷贝，降低延迟、提高吞吐。官方文档明确写了它们能带来 lower latency 和 higher throughput。
+执行器与 waitset：更适合做线程和调度控制。
+底层中间件可选：可通过 RMW_IMPLEMENTATION 切换 RMW。</p>
+<h3 id="ros-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%88%E5%B8%B8%E8%A2%AB%E5%90%90%E6%A7%BD%E6%B2%A1%E6%83%B3%E8%B1%A1%E4%B8%AD%E5%BF%AB">ROS 2 为什么又常被吐槽“没想象中快”</h3>
+<p>因为 ROS 2 的性能非常依赖：
+你选的 RMW/DDS vendor
+QoS 配置
+消息类型设计
+是否单进程组合
+网络环境，尤其是 Wi-Fi / 丢包链路
+是否出现跨 vendor / 兼容性问题。
+DDS tuning 文档甚至专门讲了：
+在真实 Linux 场景中，不同 DDS 实现会遇到实际问题；调优只是起点，而且收益可能伴随资源代价。文档还提到：在丢包 Wi-Fi 下，使用 best-effort 可能比 reliable 更合适；另外，大数组、自定义复杂类型在 ROS 2 里可能带来显著序列化开销，甚至会让从 ROS 1 迁移过来的消息“严重性能退化”。
+这点非常重要：
+ROS 2 不是“天然更快”，而是“给你更多做快的工具，同时也给你更多做慢的机会”。
+这是工程上的真实情况。</p>
+<h3 id="%E4%B8%80%E4%B8%AA%E6%AF%94%E8%BE%83%E5%AE%9E%E7%94%A8%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%A4%E6%96%AD">一个比较实用的性能判断</h3>
+<p>低复杂度、小系统、快速验证：ROS 1 的“默认体验”常常更轻
+高带宽数据流、复杂多节点、需要部署优化：ROS 2 的上限更高
+跨机器、无线网络、长期维护：ROS 2 更值得投入
+硬实时：ROS 2 比 ROS 1 更接近“可做实时友好设计”的方向，但仍然不是“只装 ROS 2 就自动实时”。
+官方也专门有 real-time programming 文档。</p>
+<h2 id="%E7%BB%B4%E6%8A%A4">维护</h2>
+<ol>
+<li>ROS 1 的最后一个发行版 Noetic 已在二〇二五年五月三十一日达到官方 EOL（停止官方维护与安全更新），继续把 ROS 1 作为“主干中间件”将带来持续累积的安全与供应链风险。</li>
+<li>ROS 2 在公开仓库下载占比与社区问题流量上已显著占优
+《2025 ROS Metrics Report》给出二〇二五年十月 ROS 2 下载占比为 91.2%，并显示 Robotics Stack Exchange 上与 ROS 相关的问题中，“ros2”标签远多于“ros1”</li>
+<li></li>
+</ol>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+  subgraph ROS1["ROS 一 典型通信结构"]
+    M["rosmaster / roscore\n(注册/发现 + 参数/日志等)"]
+    N1["节点 A"]
+    N2["节点 B"]
+    N3["节点 C"]
+    N1--"XMLRPC 注册/查询"-->M
+    N2--"XMLRPC 注册/查询"-->M
+    N3--"XMLRPC 注册/查询"-->M
+    N1--"TCPROS/UDPROS P2P"---N2
+    N2--"TCPROS/UDPROS P2P"---N3
+  end
+
+  subgraph ROS2["ROS 2 典型通信结构"]
+    D["DDS/RTPS\n(分布式发现 + QoS + 安全插件)"]
+    R1["节点 A\n(rclcpp/rclpy)"]
+    R2["节点 B\n(rclcpp/rclpy)"]
+    R3["节点 C\n(rclcpp/rclpy)"]
+    R1---D
+    R2---D
+    R3---D
+    R1--"发布/订阅\nQoS 契约"---R2
+    R2--"发布/订阅\nQoS 契约"---R3
+  end
+</div></code></pre>
+<h2 id="%E5%A4%AA%E9%95%BF%E4%B8%8D%E7%9C%8B%E7%89%88%E6%9C%AC">太长不看版本</h2>
+<p>ROS 1 的优点</p>
+<ol>
+<li><strong>简单直观</strong>
+roscore、topic、service、参数服务器，学习曲线相对平缓。</li>
+<li><strong>老项目多、历史资料多</strong>
+官方现在仍提供 migration guide 和 ros1_bridge，恰恰说明现实里还有大量 ROS 1 资产要迁移。</li>
+<li><strong>快速做实验很顺手</strong>
+特别是单机器人、单机、实验室原型阶段，这一点很多人依然喜欢。</li>
+<li><strong>心智负担低</strong>
+没有那么多 QoS / RMW / discovery / lifecycle 的设计选择。</li>
+</ol>
+<p>ROS 1 的缺点</p>
+<ol>
+<li><strong>官方生命周期已经结束</strong>
+Noetic 官方支持到 2025 年 5 月。</li>
+<li><strong>集中式架构味道更重</strong>
+Master、参数服务器都是 ROS 1 的中心依赖。</li>
+<li><strong>QoS、原生安全、生命周期、执行控制不如 ROS 2 完整</strong>
+这些是 ROS 2 重构的重点。</li>
+<li><strong>更不适合新产品长期投入</strong>
+这更多是基于官方支持结束与迁移趋势作出的工程判断。</li>
+</ol>
+<p>ROS 2 的优点</p>
+<ol>
+<li><strong>仍在积极维护，发布机制清晰</strong>
+ROS 2 按年发布，LTS 约 5 年，非 LTS 约 1.5 年；当前官方推荐 Jazzy 作为 LTS。</li>
+<li><strong>分布式发现，更适合多机系统</strong>
+没有 ROS 1 那种中心 Master 依赖。</li>
+<li><strong>QoS 强、网络适应性好</strong>
+尤其适合无线、丢包、不同数据语义并存的系统。</li>
+<li><strong>组件化、生命周期、安全、执行控制都更现代</strong>
+这对产品化系统很重要。</li>
+<li><strong>性能优化空间更大</strong>
+intra-process、loaned messages、RMW 切换、DDS tuning 都是武器。</li>
+</ol>
+<p>ROS 2 的缺点</p>
+<ol>
+<li><strong>更复杂</strong>
+QoS、RMW、Discovery、Callback Groups、Executor、Lifecycle，这些都会提高系统设计门槛。</li>
+<li><strong>同样是 ROS 2”也可能行为不同</strong>
+因为底层 RMW/DDS vendor 可以不同，而且官方明确说跨发行版通信不保证，甚至单发行版跨 vendor 也不保证。</li>
+<li><strong>调优成本更高</strong>
+官方专门提供 DDS tuning 文档，说明真实项目里确实需要调。</li>
+<li><strong>迁移旧项目不便宜</strong>
+官方直接有一整套从 ROS 1 迁到 ROS 2 的指南，这本身就说明迁移不是零成本。</li>
+</ol>
+
+</body>
+</html>
