@@ -22,6 +22,7 @@ git add .
 git commit -m "写清这次改了什么"
 git pull --rebase origin main
 git push origin main
+
 ```
 ### 提交
 提交信息尽量写清楚，比如：
@@ -40,4 +41,23 @@ git push origin main
 git log --oneline
 git diff
 git branch
+把暂存区中的文件都踢出来
+git reset
 ```
+## 易混淆概念
+![alt text](image-1.png)
+
+
+    workspace：工作区
+    staging area：暂存区/缓存区
+    local repository：版本库或本地仓库
+    remote repository：远程仓库
+
+所以add是把工作区中的文件添加到暂存区，commit是把暂存区中的文件提交到本地库，而push是把本地库中的文件推送到远程仓库。
+## git 忽略文件
+创建一个 .gitignore 文件，把要忽略的文件写在文件中，
+比如：
+build/
+install/
+log/
+完成后添加规则

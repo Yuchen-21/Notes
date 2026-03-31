@@ -55,7 +55,7 @@ WORKDIR /root/ws_ros2
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc && \
     echo "if [ -f /root/ws_ros2/install/setup.bash ]; then source /root/ws_ros2/install/setup.bash; fi" >> /root/.bashrc
 
-# 初始化 rosdep（首次可能已存在，失败可忽略）
+## 初始化 rosdep（首次可能已存在，失败可忽略）
 RUN rosdep init || true
 RUN rosdep update || true
 
