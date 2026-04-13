@@ -44,6 +44,92 @@ ROS2 概念接入
 executor / callback group 直觉
 回调入队、worker 处理模式
 用 top/htop 看自己 demo
+
+## 学习计划更新
+新的 8 周计划
+第 1-2 周：ROS2 不再泛学，先抓“系统骨架”
+
+目标：先把 ROS2 学成系统软件视角，不是学成教程机器。
+
+学这些：
+
+node / topic / service / action 的边界
+launch、参数、生命周期、bag
+executor、callback group、composition 这些概念先建立直觉
+QoS 先理解可靠性、best effort、history/depth 这些最常见的
+
+为什么先学这些：因为这些东西直接决定你以后怎么回答“调度”“通信”“为什么 ROS2 重”。ROS2 官方文档里，executors、callback groups、composition、QoS 都是核心概念，不是边角料。
+
+输出：
+
+自己画一张“ROS2 系统图”
+写 1 个最小 demo：订阅回调只做入队，worker 线程做处理
+第 3-4 周：并发基础，但只学和系统软件最相关的
+
+目标：不是学成 C++ 面经大全，而是够支撑机器人系统问题。
+
+学这些：
+
+mutex / lock_guard / unique_lock
+condition_variable
+单生产者单消费者队列
+close / timeout / 优雅退出
+线程池最小实现
+
+输出：
+
+BlockingQueue 升级到支持 close/timeout
+一个“回调入队 + worker 线程处理 + 优雅退出”的 demo
+用 top/htop 看线程和 CPU 占用
+第 5-6 周：IPC 与数据通路
+
+这是你现在的短板核心。
+
+学这些：
+
+pipe、Unix domain socket、消息队列、共享内存
+为什么共享内存适合大数据
+为什么共享内存还需要通知机制
+eventfd / semaphore 至少理解用途
+小消息、大消息、命令流、数据流如何选型
+
+输出：
+
+两个 demo：
+Unix socket 传小消息
+shared memory + 通知 传大块数据
+写一篇笔记：《IPC 选型：命令消息 vs 大块数据》
+第 7 周：ROS2 与系统软件结合
+
+目标：把 ROS2 和你现在学的并发/IPC 串起来。
+
+学这些：
+
+executor 为什么不是万能线程池
+callback group 怎么避免互相阻塞
+什么时候该把重活放在 callback 外
+composition / 单进程组件化为什么重要
+
+输出：
+
+一个“多个 callback group + worker + timer”小 demo
+写一页自己的理解：ROS2 为什么能做系统入口，但关键链路不能全靠默认配置
+第 8 周：面试包装周
+
+目标：把知识变成话术。
+
+准备 10 个高频问题：
+
+LCM 和 protobuf 怎么区分
+IPC 怎么选
+为什么共享内存快
+通知机制有哪些
+executor 和调度什么关系
+callback group 是干嘛的
+ROS2 为什么有人说重
+ROS2 能不能单进程
+topic / service / action 怎么选
+你过去项目的系统价值是什么
 ## 最小知识框架
 1. 生产者负责放数据，不负责指定谁来处理。
 2. 消费者不是等“通知”，而是等“条件成立”。

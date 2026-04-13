@@ -161,4 +161,54 @@ src/
 build/
 install/
 log/
+rm -rf build/ log/ install/
 colcon build --packages-select cus_interfaces
+
+## 自定义服务接口在不同工作空间下的使用
+1. 同一个工作空间时
+假设工作空间
+/root/ws_ros2
+├── src
+│   ├── cus_interfaces
+│   ├── demo_cpp_service
+│   └── 其他包
+
+CMakeLists.txt
+find_package(cus_interfaces REQUIRED)
+package.xml
+<depend>cus_interfaces</depend>
+实际要用的代码里
+#include "cus_interfaces/srv/patrol.hpp"
+cd /root/ws_ros2
+colcon build
+2. 不在同一个工作空间时
+需要先把服务编译好，然后在其他工作空间里使用。
+先 source A 的环境，再去编译B
+
+## 工程
+小项目 / 学习项目
+接口包和业务包常常放一个工作空间，最省事。
+
+稍正式一点
+通常会单独拆一个接口包，比如：
+my_robot_interfaces
+cus_interfaces
+
+因为这样：
+消息/服务定义集中管理
+业务包不会互相拷来拷去
+不同模块都能依赖同一份接口
+以后多工作空间 overlay 更清楚
+
+## 快捷键设置
+把下面这些加到的 ~/.bashrc：
+```bash
+alias croot='cd /root/ws_ros2'
+alias cb='cd /root/ws_ros2 && colcon build'
+alias cbs='cd /root/ws_ros2 && colcon build --packages-select'
+alias cclean='cd /root/ws_ros2 && rm -rf build install log'
+```
+全部清理
+cclean 
+编一个包
+cbs demo_cpp_service
