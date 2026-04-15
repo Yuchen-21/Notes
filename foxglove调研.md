@@ -77,7 +77,8 @@ Foxglove Studio (可视化)
 
 - Bridge 需要订阅 CyberRT 发布的传感器数据 topic。然后转换成Foxglove schema格式，再通过WebSocket发送到Foxglove Studio。
 
-支持的格式主要有以下几种：
+
+Foxglove 支持的格式主要有以下几种：
 
     Protobuf
     JSON Schema
@@ -223,7 +224,8 @@ Foxglove 主要支持rosbag包和MCAP的播放。MCAP本质是通用“传感器
 1. topic name
 2. timestamp
 3. message payload（protobuf/json/bytes）
-现在替换主要MCAP writer，可以有两种开发方式，1是用 Foxglove SDK中的 MCAP writer API ，2是自己写 MCAP（不推荐）要实现：MCAP header、chunk encoding、message index、schema index
+现在替换主要MCAP writer，可以有两种开发方式，1是用 Foxglove SDK中的 MCAP writer API ，2是自己写 MCAP（不推荐）要实现：MCAP header、chunk encoding、message index、schema index。
+*但理论上有个**点击录制**的功能，直接在Studio中点击录制按钮，就可以开始录制数据，但可能是我选的是免费版，所以没找到这个按钮。*
 也就是流程是
 ```bash
 CyberRT
@@ -243,3 +245,27 @@ Foxglove Studio playback
 1. 时间戳同步统一
 2. schema注册 每个topic必须有：schema name、schema definition
 3. Foxglove 只要 flatten，也就是一整段连续内存（byte array），不能有分块存储。1. 点云 = GPU buffer（必须 flatten）2. 图像 = 编码流（JPEG/H264）3. TF = 坐标树（frame graph）
+### 5.3 替换系统性风险
+使用FoxGlove Studio+CyberRT来替换ROS + rviz 后，主要系统风险有以下几点，**TF、时间系统、消息同步、机器人模型系统以及状态估计系统能力**的缺失，Foxglove 本质是**轻量可视化工具**而非机器人中间件，因此**所有语义融合能力**必须由 Bridge 或上游系统自行实现。
+**1. TF**
+TF主要问题为时间语义缺失、frame tree 不完整、静态与动态 TF 混用以及频率控制问题。  
+1.1时间语义丢失
+Foxglove TF 不做历史插值，不做 buffer lookup，只展示“当前 graph 状态”
+1.2 Apollo TF 和 ROS TF 设计方向不一致
+Apollo TF 更新频率低,更像“配置 + 更新”;
+ROS特点：动态 graph + 时间缓存并且支持历史查询
+1.3 Frame tree 不完整
+Foxglove 要求必须是“完整可连通图”
+1.4 TF父子关系不一致
+1.5 显示频率不一致
+1.6 缺少静态TF管理
+**2. 时间系统**
+需要开发时间同步模块，确保所有数据都有时间戳。
+**3. 消息同步**
+需要approximate sync、buffer queue
+**4. 坐标语义丢失**
+3D模型不对齐、camera / lidar漂移
+**5. URDF / 机器人模型系统**
+机械臂 / 车辆模型不自动驱动、joint state 需要人为发送
+**6. 调试工具链缺失**
+缺少tf_echo、rqt_graph、rosbag filter、rviz plugins等工具
