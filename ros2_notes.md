@@ -212,3 +212,56 @@ alias cclean='cd /root/ws_ros2 && rm -rf build install log'
 cclean 
 编一个包
 cbs demo_cpp_service
+
+## ros2 control 
+核心不是“控制算法”，而是“硬件抽象 + 控制资源管理”
+
+     URDF / <ros2_control> 描述硬件接口
+          ↓
+     Resource Manager 加载硬件插件
+          ↓
+     Controller Manager 加载控制器插件
+          ↓
+     read() 读取硬件状态
+          ↓
+     controller.update() 计算控制输出
+          ↓
+     write() 写入硬件命令
+
+Controller Manager 定义为 ros2_control 的主组件，它负责管理控制器生命周期、访问硬件接口，并向 ROS 世界提供服务；其控制循环就是读取硬件、更新控制器、再写回硬件。Resource Manager 则负责抽象物理硬件和驱动，通过 pluginlib 加载硬件组件。
+它提供低抖动控制循环和资源管理框架，但确定性取决于 RT kernel、线程调度、驱动 read/write 是否阻塞、controller update 是否实时安全。
+先在 URDF 的 <ros2_control> 中声明硬件、关节、state interface、command interface；
+然后实现 hardware component 插件，例如 SystemInterface；
+在 read() 中读取编码器、IMU、电机状态；
+在 write() 中下发速度、位置或力矩命令；
+再通过 controller_manager 加载 joint_state_broadcaster、diff_drive_controller 或自定义 controller
+
+## nav2 
+Nav2 使用行为树来编排多个独立的模块化服务器；这些 task server 可以计算路径、控制努力、执行恢复行为，服务器之间通过 ROS action 或 service 与 BT 通信
+
+     NavigateToPose Action
+          ↓
+     BT Navigator 行为树调度
+          ↓
+     Planner Server 生成全局路径
+          ↓
+     Smoother Server 可选平滑路径
+          ↓
+     Controller Server 跟踪路径，输出 cmd_vel
+          ↓
+     Behavior Server / Recovery 处理异常
+          ↓
+     底盘执行层
+
+Nav2 解决的是
+机器人从“我要去某个点”到“中途遇障、重规划、恢复、清 costmap、绕障、停靠、继续执行”的任务级导航编排问题。
+
+     BT Navigator：任务大脑，决定什么时候规划、什么时候跟踪、什么时候恢复
+     Planner Server：全局路径规划
+     Controller Server：局部路径跟踪，输出速度命令
+     Costmap：局部/全局环境代价地图
+     Behavior Server：Spin、Backup、Wait、恢复行为等
+     Lifecycle Manager：统一管理 Nav2 各节点生命周期
+     TF：map / odom / base_link 等坐标关系基础
+
+

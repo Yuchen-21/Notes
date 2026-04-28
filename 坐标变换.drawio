@@ -1,0 +1,104 @@
+<mxfile host="65bd71144e">
+    <diagram id="BPFsW3YxcAhaFyYfMMe_" name="第 1 页">
+        <mxGraphModel dx="1117" dy="663" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="20" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="240" width="400" height="550" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="370" width="160" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="3" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="earth" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="280" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="5" target="7">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="T_map_odom = T_map_base_link * inverse(T_odom_base_link)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#CC0000;" vertex="1" connectable="0" parent="8">
+                    <mxGeometry x="-0.2357" relative="1" as="geometry">
+                        <mxPoint x="160" y="5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="map" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="380" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="7" target="9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="动态TF" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="10">
+                    <mxGeometry x="-0.2995" y="-1" relative="1" as="geometry">
+                        <mxPoint x="31" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="7" value="odom" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="480" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="9" target="11">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="9" target="11">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="9" target="14">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="base_link" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="578.75" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="sensor" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="280" y="680" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="actuator" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="470" y="680" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="一般表示&lt;strong data-end=&quot;259&quot; data-start=&quot;247&quot;&gt;机器人车体坐标系&lt;/strong&gt;，是固定在机器人本体上的 frame" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+                    <mxGeometry x="23" y="588.5" width="170" height="42.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="&lt;strong data-start=&quot;823&quot; data-end=&quot;835&quot;&gt;局部里程计坐标系&lt;/strong&gt;，它通常在机器人启动或定位初始化时建立。它不是车上的某个点，而是一个“局部世界参考系”。来自轮速计、视觉里程计、IMU 。&lt;div&gt;会随&lt;b&gt;时间漂移，但短期准确且连续&lt;/b&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+                    <mxGeometry x="23" y="464.75" width="170" height="106.25" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="" style="endArrow=classic;html=1;shape=flexArrow;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="370" y="510" as="sourcePoint"/>
+                        <mxPoint x="200" y="509.71" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="23" value="" style="endArrow=classic;html=1;shape=flexArrow;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="370" y="608.75" as="sourcePoint"/>
+                        <mxPoint x="200" y="608.46" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="26" value="每个模块只需要声明自己的数据在哪个 frame 下，系统通过 TF 树自动换算到目标 frame。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+                    <mxGeometry x="23" y="191" width="180" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="" style="endArrow=classic;html=1;shape=flexArrow;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="370" y="410" as="sourcePoint"/>
+                        <mxPoint x="200" y="409.71000000000004" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="28" value="来自全局定位、SLAM、AMCL、GNSS/INS 修正等，作用是&lt;strong data-end=&quot;2576&quot; data-start=&quot;2559&quot;&gt;修正 odom 的累计漂移。&lt;/strong&gt;&lt;div&gt;&lt;strong data-end=&quot;2576&quot; data-start=&quot;2559&quot;&gt;长期全局参考，&lt;/strong&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;可以发生离散跳变，&lt;/span&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;根据传感器观测不断重新计算机器人在地图中的位置&lt;/span&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+                    <mxGeometry x="23" y="354.75" width="170" height="106.25" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="定位模块通常&lt;strong data-start=&quot;3265&quot; data-end=&quot;3271&quot;&gt;计算&lt;/strong&gt;&lt;div&gt;&lt;strong data-start=&quot;3265&quot; data-end=&quot;3271&quot;&gt;map -&amp;gt; base_link，&lt;/strong&gt;&lt;/div&gt;&lt;div&gt;&lt;strong data-start=&quot;3265&quot; data-end=&quot;3271&quot;&gt;但不广播，结合&lt;/strong&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;&lt;b&gt;odom -&amp;gt; base_link，得到map -&lt;/b&gt;&lt;/span&gt;&lt;strong style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot; data-start=&quot;3265&quot; data-end=&quot;3271&quot;&gt;&amp;gt;&lt;/strong&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;&lt;b&gt;&amp;nbsp;odom&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="370" width="120" height="98.12" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="地心地固坐标系。&lt;span&gt;全球坐标到局部地图坐标。&lt;/span&gt;&lt;div&gt;多个机器人、多个地图、跨区域地图，初始化时没有可以后期接入。&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+                    <mxGeometry x="23" y="271" width="170" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="" style="endArrow=classic;html=1;shape=flexArrow;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="370" y="310" as="sourcePoint"/>
+                        <mxPoint x="200" y="309.71000000000004" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
